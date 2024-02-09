@@ -10,7 +10,7 @@ function Login() {
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => alert(JSON.stringify(values))}
       validationSchema={loginValidationSchema}
     >
       <Form className={styles.login}>

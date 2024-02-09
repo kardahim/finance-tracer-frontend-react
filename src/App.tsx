@@ -14,15 +14,17 @@ function App() {
     <div id="app">
       <Router>
         <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/income/new" element={<NewIncome />} />
-          <Route path="/expense/new" element={<NewExpense />} />
-          <Route path="/income/edit/:id" element={<EditIncome />} />
-          <Route path="/expense/edit/:id" element={<EditExpense />} />
-        </Routes>
+        <div id="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/income/new" element={<NewIncome />} />
+            <Route path="/expense/new" element={<NewExpense />} />
+            <Route path="/income/edit/:id" element={<EditIncome />} />
+            <Route path="/expense/edit/:id" element={<EditExpense />} />
+          </Routes>
+        </div>
         <Footer />
       </Router>
     </div>
