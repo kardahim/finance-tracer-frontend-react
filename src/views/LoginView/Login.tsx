@@ -1,9 +1,10 @@
 import styles from "./Login.module.scss";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { loginValidationSchema } from "../../assets/validation/loginValidationSchema";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginAsync } from "../../stores/authSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAsync, selectUser } from "../../stores/authSlice";
+import { useEffect } from "react";
 
 // FIXME:ErrorMessage in react shows only error when error occur, in Vue I used div that show empty string or error message
 // in summary in Vue form looks visual better
@@ -11,11 +12,17 @@ function Login() {
   // any other soluttion make bugs...
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch: any = useDispatch();
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
-  // TODO: add navigate after succesful login
   const onSubmit = (values: { email: string; password: string }) => {
     dispatch(loginAsync(values));
   };
+
+  // works but is slow compared to Vue
+  useEffect(() => {
+    if (user.isLogged) navigate("/");
+  }, [user.isLogged, navigate]);
 
   return (
     <Formik
