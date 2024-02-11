@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../interfaces/user";
 import myAxios from "../helpers/axios";
 import { RootState } from "../stores/store";
+// import { Register } from "../interfaces/register";
 
 const initialUser = JSON.parse(localStorage.getItem("user") || "null");
 
@@ -24,6 +25,8 @@ export const loginAsync = createAsyncThunk(
   }
 );
 
+// export const registerAsync = createAsyncThunk("auth/register", async (data: Register) => {});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: user,
@@ -42,20 +45,24 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginAsync.fulfilled, (state, action) => {
-      const { user, token, refreshToken } = action.payload;
+    builder
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        const { user, token, refreshToken } = action.payload;
 
-      state.id = user.id;
-      state.firstName = user.firstName;
-      state.lastName = user.lastName;
-      state.email = user.email;
-      state.token = token;
-      state.refreshToken = refreshToken;
-      state.role = user.role;
-      state.isLogged = true;
+        state.id = user.id;
+        state.firstName = user.firstName;
+        state.lastName = user.lastName;
+        state.email = user.email;
+        state.token = token;
+        state.refreshToken = refreshToken;
+        state.role = user.role;
+        state.isLogged = true;
 
-      localStorage.setItem("user", JSON.stringify(state));
-    });
+        localStorage.setItem("user", JSON.stringify(state));
+      })
+      .addCase(loginAsync.rejected, (_, action) => {
+        console.error("Login, error", action.error);
+      });
   },
 });
 
