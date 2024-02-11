@@ -12,6 +12,7 @@ function Login() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch: any = useDispatch();
 
+  // TODO: add navigate after succesful login
   const onSubmit = (values: { email: string; password: string }) => {
     dispatch(loginAsync(values));
   };
