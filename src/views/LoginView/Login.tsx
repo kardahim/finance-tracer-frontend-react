@@ -64,7 +64,9 @@ function Login() {
           />
         </div>
         <div className={`${styles.login__item} ${styles["login__item--flex"]}`}>
-          <button className={styles.login__item__button}>Log in</button>
+          <button className={styles.login__item__button} type="submit">
+            Log in
+          </button>
           <Link to="/register">Register</Link>
         </div>
       </Form>

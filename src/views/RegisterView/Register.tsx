@@ -2,15 +2,25 @@ import styles from "./Register.module.scss";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import { registerValidationSchema } from "../../assets/validation/registerValidationSchema";
+import { Register as RegisterI } from "../../interfaces/register";
+import { useDispatch } from "react-redux";
+import { registerAsync } from "../../stores/authSlice";
 
-// TODO: add submit function
 // FIXME:ErrorMessage in react shows only error when error occur, in Vue I used div that show empty string or error message
 // in summary in Vue form looks visual better
 function Register() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dispatch: any = useDispatch();
+
+  // TODO: navigate to home page if success...
+  const onSubmit = (values: RegisterI) => {
+    dispatch(registerAsync(values));
+  };
+
   return (
     <Formik
       initialValues={{ firstName: "", lastName: "", password: "", email: "" }}
-      onSubmit={(values) => alert(JSON.stringify(values))}
+      onSubmit={onSubmit}
       validationSchema={registerValidationSchema}
     >
       <Form className={styles.register}>
@@ -79,7 +89,9 @@ function Register() {
         <div
           className={`${styles.register__item} ${styles["register__item--flex"]}`}
         >
-          <button className={styles.register__item__button}>Register</button>
+          <button className={styles.register__item__button} type="submit">
+            Register
+          </button>
           <Link to="/login">Login</Link>
         </div>
       </Form>
