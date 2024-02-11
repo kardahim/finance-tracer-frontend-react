@@ -8,9 +8,21 @@ import NewIncome from "./views/NewIncomeView/NewIncome";
 import NewExpense from "./views/NewExpenseView/NewExpense";
 import EditIncome from "./views/EditIncomeView/EditIncome";
 import EditExpense from "./views/EditExpenseView/EditExpense";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logout, refreshAsync } from "./stores/authSlice";
+import store from "./stores/store";
 
 function App() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const dispatch: any = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshAsync(store.getState().auth.token)).catch(() => {
+      dispatch(logout());
+    });
+  }, [dispatch]);
+
   return (
     <div id="app">
       <Router>

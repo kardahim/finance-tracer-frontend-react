@@ -1,13 +1,14 @@
 // Original style by G. Rohit
 // https://codepen.io/grohit/pen/jObGzdG
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "./Navigation.module.scss";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout, selectUser } from "../../stores/authSlice";
+import { logout } from "../../stores/authSlice";
+import store from "../../stores/store";
 
 function Navigation() {
-  const user = useSelector(selectUser);
+  const user = store.getState().auth;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../interfaces/user";
 import myAxios from "../helpers/axios";
-import { RootState } from "../stores/store";
 import { Register } from "../interfaces/register";
 
 const initialUser = JSON.parse(localStorage.getItem("user") || "null");
@@ -29,6 +28,16 @@ export const registerAsync = createAsyncThunk(
   "auth/register",
   async (data: Register) => {
     await myAxios.post("auth/signup", data);
+  }
+);
+
+export const refreshAsync = createAsyncThunk(
+  "auth/refresh",
+  async (token: string | null) => {
+    const response = await myAxios.post("auth/refresh", {
+      token: token,
+    });
+    return response.data;
   }
 );
 
@@ -74,10 +83,21 @@ export const authSlice = createSlice({
       .addCase(registerAsync.rejected, (_, action) => {
         console.error("Register, error", action.error);
         throw action.error;
+      })
+      // refresh
+      .addCase(refreshAsync.fulfilled, (state, action) => {
+        state.token = action.payload.token;
+        state.refreshToken = action.payload.refreshToken;
+
+        localStorage.setItem("user", JSON.stringify(state));
+      })
+      .addCase(refreshAsync.rejected, (_, action) => {
+        console.error("Refresh token, error", action.error);
+        throw action.error;
       });
   },
 });
 
-export const selectUser = (state: RootState) => state.auth;
+// export const selectUser = (state: RootState) => state.auth;
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;
