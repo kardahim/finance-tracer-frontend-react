@@ -68,10 +68,12 @@ export const authSlice = createSlice({
       })
       .addCase(loginAsync.rejected, (_, action) => {
         console.error("Login, error", action.error);
+        throw action.error;
       })
       // register
       .addCase(registerAsync.rejected, (_, action) => {
         console.error("Register, error", action.error);
+        throw action.error;
       });
   },
 });
