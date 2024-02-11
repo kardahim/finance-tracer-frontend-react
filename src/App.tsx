@@ -8,6 +8,7 @@ import NewIncome from "./views/NewIncomeView/NewIncome";
 import NewExpense from "./views/NewExpenseView/NewExpense";
 import EditIncome from "./views/EditIncomeView/EditIncome";
 import EditExpense from "./views/EditExpenseView/EditExpense";
+import { Suspense } from "react";
 
 function App() {
   return (
@@ -15,15 +16,17 @@ function App() {
       <Router>
         <Navigation />
         <div id="content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/income/new" element={<NewIncome />} />
-            <Route path="/expense/new" element={<NewExpense />} />
-            <Route path="/income/edit/:id" element={<EditIncome />} />
-            <Route path="/expense/edit/:id" element={<EditExpense />} />
-          </Routes>
+          <Suspense fallback={"loading..."}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/income/new" element={<NewIncome />} />
+              <Route path="/expense/new" element={<NewExpense />} />
+              <Route path="/income/edit/:id" element={<EditIncome />} />
+              <Route path="/expense/edit/:id" element={<EditExpense />} />
+            </Routes>
+          </Suspense>
         </div>
         <Footer />
       </Router>
