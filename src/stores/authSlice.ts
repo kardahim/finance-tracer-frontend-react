@@ -27,7 +27,20 @@ export const loginAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState: user,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem("user");
+
+      state.id = null;
+      state.firstName = null;
+      state.lastName = null;
+      state.email = null;
+      state.token = null;
+      state.refreshToken = null;
+      state.role = null;
+      state.isLogged = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginAsync.fulfilled, (state, action) => {
       const { user, token, refreshToken } = action.payload;
@@ -47,4 +60,5 @@ export const authSlice = createSlice({
 });
 
 export const selectUser = (state: RootState) => state.auth;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;
