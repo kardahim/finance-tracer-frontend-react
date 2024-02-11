@@ -25,18 +25,18 @@ function Navigation() {
           </NavLink>
         </li>
         {!user.isLogged ? (
-          <li>
-            <NavLink to="/login" data-item="Login">
-              Login
-            </NavLink>
-          </li>
-        ) : null}
-        {!user.isLogged ? (
-          <li>
-            <NavLink to="/register" data-item="Register">
-              Register
-            </NavLink>
-          </li>
+          <>
+            <li>
+              <NavLink to="/login" data-item="Login">
+                Login
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/register" data-item="Register">
+                Register
+              </NavLink>
+            </li>
+          </>
         ) : null}
         {user.isLogged ? (
           <li>
