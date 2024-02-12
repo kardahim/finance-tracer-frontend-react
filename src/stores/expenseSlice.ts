@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Expense } from "../interfaces/expense";
 import myAxios from "../helpers/axios";
 
-const expense: [Expense] = [
+const expenses: [Expense] = [
   {
     id: null,
     name: null,
@@ -49,7 +49,7 @@ export const getExpenseListAsync = createAsyncThunk(
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
-    expense: expense,
+    expenses: expenses,
     singleExpense: singleExpense,
     expenseSources: expenseSources,
   },
@@ -71,7 +71,7 @@ export const expenseSlice = createSlice({
           userId: item.user.id,
         }));
 
-        state.expense = newRecords;
+        state.expenses = newRecords;
       })
       .addCase(getExpenseListAsync.rejected, (_, action) => {
         console.error("getExpenseList, error", action.error);

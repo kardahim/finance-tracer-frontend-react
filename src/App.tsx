@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footbar/Footer";
 import Navigation from "./components/Navigation/Navigation";
@@ -9,19 +10,18 @@ import NewExpense from "./views/NewExpenseView/NewExpense";
 import EditIncome from "./views/EditIncomeView/EditIncome";
 import EditExpense from "./views/EditExpenseView/EditExpense";
 import { Suspense, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout, refreshAsync } from "./stores/authSlice";
-import store from "./stores/store";
 
 function App() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dispatch: any = useDispatch();
+  const token = useSelector((state: any) => state.auth.token);
 
   useEffect(() => {
-    dispatch(refreshAsync(store.getState().auth.token)).catch(() => {
+    dispatch(refreshAsync(token)).catch(() => {
       dispatch(logout());
     });
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   return (
     <div id="app">

@@ -1,0 +1,86 @@
+@import "../../assets/styles/variables.scss";
+
+.home {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 30px;
+
+  @media (min-width: 1700px) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  &__card {
+    box-shadow: $main-box-shadow;
+    height: auto;
+    padding: 60px;
+    border-radius: 10px;
+
+    &__title {
+      text-transform: uppercase;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    &__table {
+      border-collapse: collapse;
+      width: 100%;
+
+      td {
+        border: 1px solid $sub-text-color;
+        padding: 20px;
+
+        button {
+          width: 100%;
+          background-color: $accent-color;
+          font-size: 1.2rem;
+          cursor: pointer;
+          outline: none;
+          border: none;
+          font-weight: 800;
+
+          &:hover {
+            background-color: $accent-color-hover;
+          }
+        }
+      }
+      &__head {
+        font-weight: 800;
+        text-transform: uppercase;
+        text-align: center;
+        td {
+          padding: 10px 20px;
+        }
+      }
+      &__body {
+        &__btn-action {
+          display: flex;
+          gap: 10px;
+          height: 50px;
+          width: 200px;
+        }
+
+        tr:hover {
+          font-weight: 800;
+        }
+
+        &__btn-row {
+          td {
+            border: none;
+            padding: 0;
+          }
+          button {
+            margin-top: 15px;
+            height: 40px;
+            width: 100%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background-color: $accent-color;
+            font-weight: 800;
+          }
+        }
+      }
+    }
+  }
+}
