@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Income } from "../interfaces/income";
 import myAxios from "../helpers/axios";
+import { IncomeExpense } from "../interfaces/incomeExpense";
 
 const income: [Income] = [
   {
@@ -46,6 +47,26 @@ export const getIncomeListAsync = createAsyncThunk(
   }
 );
 
+export const getIncomeSourcesAsync = createAsyncThunk(
+  "income/getIncomeSources",
+  async (token: string | null) => {
+    const response = await myAxios.get(`/income-source`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data;
+  }
+);
+
+export const createNewIncomeAsync = createAsyncThunk(
+  "income/createNewIncome",
+  async (data: { incomeData: IncomeExpense; token: string | null }) => {
+    await myAxios.post(`/income`, data.incomeData, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const incomeSlice = createSlice({
   name: "income",
   initialState: {
@@ -75,6 +96,19 @@ export const incomeSlice = createSlice({
       })
       .addCase(getIncomeListAsync.rejected, (_, action) => {
         console.error("getIncomeList, error", action.error);
+        throw action.error;
+      })
+      // incomeSources
+      .addCase(getIncomeSourcesAsync.fulfilled, (state, action) => {
+        state.incomeSources = action.payload;
+      })
+      .addCase(getIncomeSourcesAsync.rejected, (_, action) => {
+        console.error("getIncomeSources, error", action.error);
+        throw action.error;
+      })
+      // add new income
+      .addCase(createNewIncomeAsync.rejected, (_, action) => {
+        console.error("Refresh token, error", action.error);
         throw action.error;
       });
   },
