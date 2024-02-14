@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getIncomeListAsync } from "../../stores/incomeSlice";
 import { getExpenseListAsync } from "../../stores/expenseSlice";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 // FIXME: problem with missing <tr></tr> in table head (also in vue)
 function Home() {
   const dispatch: any = useDispatch();
+  const navigate = useNavigate();
 
   const userId = useSelector((state: any) => state.auth.id);
   const token = useSelector((state: any) => state.auth.token);
@@ -61,6 +63,13 @@ function Home() {
                 </td>
               </tr>
             ))}
+            <tr className={styles["home__card__table__body__btn-row"]}>
+              <td colSpan={100}>
+                <button onClick={() => navigate("/income/new")}>
+                  Add new income
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -93,6 +102,13 @@ function Home() {
                 </td>
               </tr>
             ))}
+            <tr className={styles["home__card__table__body__btn-row"]}>
+              <td colSpan={100}>
+                <button onClick={() => navigate("/expense/new")}>
+                  Add new expense
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
