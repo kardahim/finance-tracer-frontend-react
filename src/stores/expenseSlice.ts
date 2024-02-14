@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Expense } from "../interfaces/expense";
 import myAxios from "../helpers/axios";
+import { IncomeExpense } from "../interfaces/incomeExpense";
 
 const expenses: [Expense] = [
   {
@@ -46,6 +47,26 @@ export const getExpenseListAsync = createAsyncThunk(
   }
 );
 
+export const getExpenseSourcesAsync = createAsyncThunk(
+  "expense/getExpenseSources",
+  async (token: string | null) => {
+    const response = await myAxios.get(`/expense-source`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data;
+  }
+);
+
+export const createNewExpenseAsync = createAsyncThunk(
+  "expense/createNewExpense",
+  async (data: { expenseData: IncomeExpense; token: string | null }) => {
+    await myAxios.post(`/expense`, data.expenseData, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
@@ -75,6 +96,19 @@ export const expenseSlice = createSlice({
       })
       .addCase(getExpenseListAsync.rejected, (_, action) => {
         console.error("getExpenseList, error", action.error);
+        throw action.error;
+      })
+      // expenseSources
+      .addCase(getExpenseSourcesAsync.fulfilled, (state, action) => {
+        state.expenseSources = action.payload;
+      })
+      .addCase(getExpenseSourcesAsync.rejected, (_, action) => {
+        console.error("getExpenseSources, error", action.error);
+        throw action.error;
+      })
+      // add new expense
+      .addCase(createNewExpenseAsync.rejected, (_, action) => {
+        console.error("Refresh token, error", action.error);
         throw action.error;
       });
   },
