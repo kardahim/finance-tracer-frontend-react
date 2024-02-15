@@ -6,6 +6,14 @@ import { getIncomeListAsync } from "../../stores/incomeSlice";
 import { getExpenseListAsync } from "../../stores/expenseSlice";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Colors,
+  Legend,
+  Tooltip,
+} from "chart.js";
+import { Pie } from "react-chartjs-2";
 
 // FIXME: problem with missing <tr></tr> in table head (also in vue)
 function Home() {
@@ -31,6 +39,62 @@ function Home() {
       })
     );
   }, [dispatch, userId, token]);
+
+  const expenseSum = expenses.reduce((acc: any, entry: any) => {
+    const expenseSourceName = entry.expenseSource.name;
+    const totalAmount = acc[expenseSourceName]
+      ? acc[expenseSourceName] + entry.amount
+      : entry.amount;
+    acc[expenseSourceName] = totalAmount;
+    return acc;
+  }, {} as { [key: string]: number });
+
+  const incomeSum = income.reduce((acc: any, entry: any) => {
+    const IncomeSourceName = entry.incomeSource.name;
+    const totalAmount = acc[IncomeSourceName]
+      ? acc[IncomeSourceName] + entry.amount
+      : entry.amount;
+    acc[IncomeSourceName] = totalAmount;
+    return acc;
+  }, {} as { [key: string]: number });
+
+  const IncomeData: {
+    labels: string[];
+    datasets: [{ backgroundColor?: string[]; data: number[] }];
+  } = {
+    labels: Object.keys(incomeSum),
+    datasets: [
+      {
+        // backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
+        data: Object.values(incomeSum),
+      },
+    ],
+  };
+
+  const ExpenseData: {
+    labels: string[];
+    datasets: [{ backgroundColor?: string[]; data: number[] }];
+  } = {
+    labels: Object.keys(expenseSum),
+    datasets: [
+      {
+        // backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+        data: Object.values(expenseSum),
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      colors: {
+        forceOverride: true,
+      },
+    },
+  };
+
+  ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
   return (
     <main className={styles.home}>
@@ -115,12 +179,26 @@ function Home() {
       {/* income card chart */}
       <div className={styles.home__card}>
         <h1 className={styles.home__card__title}>Income Sources</h1>
-        <div className={styles.home__card__chart}>{/* TODO: add chart */}</div>
+        <div className={styles.home__card__chart}>
+          <Pie
+            options={chartOptions}
+            data={IncomeData}
+            height={300}
+            width={300}
+          />
+        </div>
       </div>
       {/* expense card chart */}
       <div className={styles.home__card}>
         <h1 className={styles.home__card__title}>Expense Sources</h1>
-        <div className={styles.home__card__chart}>{/* TODO: add chart */}</div>
+        <div className={styles.home__card__chart}>
+          <Pie
+            options={chartOptions}
+            data={ExpenseData}
+            height={300}
+            width={300}
+          />
+        </div>
       </div>
     </main>
   );
