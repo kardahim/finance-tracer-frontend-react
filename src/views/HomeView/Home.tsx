@@ -2,8 +2,14 @@
 import { useEffect } from "react";
 import styles from "./Home.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getIncomeListAsync } from "../../stores/incomeSlice";
-import { getExpenseListAsync } from "../../stores/expenseSlice";
+import {
+  deleteIncomeAsync,
+  getIncomeListAsync,
+} from "../../stores/incomeSlice";
+import {
+  deleteExpenseAsync,
+  getExpenseListAsync,
+} from "../../stores/expenseSlice";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import {
@@ -96,6 +102,32 @@ function Home() {
 
   ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
+  const deleteExpense = (expenseId: number) => {
+    dispatch(deleteExpenseAsync({ expenseId: expenseId, token: token })).then(
+      () => {
+        dispatch(
+          getExpenseListAsync({
+            userId: userId,
+            token: token,
+          })
+        );
+      }
+    );
+  };
+
+  const deleteIncome = (incomeId: number) => {
+    dispatch(deleteIncomeAsync({ incomeId: incomeId, token: token })).then(
+      () => {
+        dispatch(
+          getIncomeListAsync({
+            userId: userId,
+            token: token,
+          })
+        );
+      }
+    );
+  };
+
   return (
     <main className={styles.home}>
       {/* income card table */}
@@ -120,8 +152,10 @@ function Home() {
                   <div
                     className={styles["home__card__table__body__btn-action"]}
                   >
-                    {/* TODO: add edit and delete action */}
-                    <button>Delete</button>
+                    {/* TODO: add edit */}
+                    <button onClick={() => deleteIncome(income.id)}>
+                      Delete
+                    </button>
                     <button>Edit</button>
                   </div>
                 </td>
@@ -159,8 +193,10 @@ function Home() {
                   <div
                     className={styles["home__card__table__body__btn-action"]}
                   >
-                    {/* TODO: add edit and delete action */}
-                    <button>Delete</button>
+                    {/* TODO: add edit */}
+                    <button onClick={() => deleteExpense(expense.id)}>
+                      Delete
+                    </button>
                     <button>Edit</button>
                   </div>
                 </td>

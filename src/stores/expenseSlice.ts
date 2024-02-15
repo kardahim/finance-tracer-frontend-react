@@ -67,6 +67,15 @@ export const createNewExpenseAsync = createAsyncThunk(
   }
 );
 
+export const deleteExpenseAsync = createAsyncThunk(
+  "expense/deleteExpense",
+  async (data: { expenseId: number; token: string | null }) => {
+    await myAxios.delete(`/expense/${data.expenseId}`, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
@@ -108,7 +117,12 @@ export const expenseSlice = createSlice({
       })
       // add new expense
       .addCase(createNewExpenseAsync.rejected, (_, action) => {
-        console.error("Refresh token, error", action.error);
+        console.error("Create new expense, error", action.error);
+        throw action.error;
+      })
+      // delete expense
+      .addCase(deleteExpenseAsync.rejected, (_, action) => {
+        console.error("Delete expense, error", action.error);
         throw action.error;
       });
   },

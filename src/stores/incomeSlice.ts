@@ -67,6 +67,15 @@ export const createNewIncomeAsync = createAsyncThunk(
   }
 );
 
+export const deleteIncomeAsync = createAsyncThunk(
+  "income/deleteIncome",
+  async (data: { incomeId: number; token: string | null }) => {
+    await myAxios.delete(`/income/${data.incomeId}`, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const incomeSlice = createSlice({
   name: "income",
   initialState: {
@@ -109,6 +118,11 @@ export const incomeSlice = createSlice({
       // add new income
       .addCase(createNewIncomeAsync.rejected, (_, action) => {
         console.error("Refresh token, error", action.error);
+        throw action.error;
+      })
+      // delete income
+      .addCase(deleteIncomeAsync.rejected, (_, action) => {
+        console.error("Delete income, error", action.error);
         throw action.error;
       });
   },
