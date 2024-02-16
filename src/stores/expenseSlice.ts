@@ -76,6 +76,26 @@ export const deleteExpenseAsync = createAsyncThunk(
   }
 );
 
+export const getExpenseByIdAsync = createAsyncThunk(
+  "expense/getExpenseById",
+  async (data: { id: number; token: string | null }) => {
+    const response = await myAxios.get(`/expense/${data.id}`, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+
+    return response.data;
+  }
+);
+
+export const editExpenseAsync = createAsyncThunk(
+  "expense/editExpense",
+  async (data: { id: number; data: IncomeExpense; token: string | null }) => {
+    await myAxios.put(`/expense/${data.id}`, data.data, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
@@ -123,6 +143,26 @@ export const expenseSlice = createSlice({
       // delete expense
       .addCase(deleteExpenseAsync.rejected, (_, action) => {
         console.error("Delete expense, error", action.error);
+        throw action.error;
+      })
+      // getExpense by id
+      .addCase(getExpenseByIdAsync.fulfilled, (state, action) => {
+        state.singleExpense.id = action.payload.id;
+        state.singleExpense.name = action.payload.name;
+        state.singleExpense.amount = action.payload.amount;
+        state.singleExpense.date = action.payload.date;
+        state.singleExpense.expenseSource.id = action.payload.expenseSource.id;
+        state.singleExpense.expenseSource.name =
+          action.payload.expenseSource.name;
+        state.singleExpense.userId = action.payload.user.id;
+      })
+      .addCase(getExpenseByIdAsync.rejected, (_, action) => {
+        console.error("get expense by id, error", action.error);
+        throw action.error;
+      })
+      // edit income
+      .addCase(editExpenseAsync.rejected, (_, action) => {
+        console.error("edit expense, error", action.error);
         throw action.error;
       });
   },

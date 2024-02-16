@@ -1,0 +1,77 @@
+@import "../../assets/styles/variables.scss";
+.expense {
+  box-shadow: $main-box-shadow;
+  max-width: 500px;
+  height: auto;
+  padding: 60px;
+  border-radius: 10px;
+  margin: 0 30px;
+
+  &__title {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+  }
+
+  &__item {
+    margin-bottom: 20px;
+
+    &__label {
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    &__input {
+      width: 100%;
+      height: 40px;
+      font-size: 2rem;
+      outline: none;
+
+      &:focus {
+        border: black solid 2px;
+      }
+    }
+
+    &__button {
+      margin-top: 10px;
+      height: 40px;
+      width: 50%;
+      text-transform: uppercase;
+      transition: all 0.5s ease-in-out;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      font-size: 1.1rem;
+      background-color: $accent-color;
+      color: black;
+      font-weight: 800;
+
+      &:hover {
+        background-color: $accent-color-hover;
+      }
+    }
+
+    &__error {
+      height: 10px;
+      color: $accent-color;
+      margin-top: 10px;
+      font-style: italic;
+    }
+  }
+
+  &__item--flex {
+    display: flex;
+    gap: 30px;
+    align-items: baseline;
+
+    a {
+      transition: all 0.5s ease-in-out;
+      color: $text-color;
+
+      &:hover {
+        color: $sub-text-color;
+      }
+    }
+  }
+}

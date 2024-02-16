@@ -76,6 +76,26 @@ export const deleteIncomeAsync = createAsyncThunk(
   }
 );
 
+export const getIncomeByIdAsync = createAsyncThunk(
+  "income/getIncomeById",
+  async (data: { id: number; token: string | null }) => {
+    const response = await myAxios.get(`/income/${data.id}`, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+
+    return response.data;
+  }
+);
+
+export const editIncomeAsync = createAsyncThunk(
+  "income/editIncome",
+  async (data: { id: number; data: IncomeExpense; token: string | null }) => {
+    await myAxios.put(`/income/${data.id}`, data.data, {
+      headers: { Authorization: `Bearer ${data.token}` },
+    });
+  }
+);
+
 export const incomeSlice = createSlice({
   name: "income",
   initialState: {
@@ -123,6 +143,25 @@ export const incomeSlice = createSlice({
       // delete income
       .addCase(deleteIncomeAsync.rejected, (_, action) => {
         console.error("Delete income, error", action.error);
+        throw action.error;
+      })
+      // getincome by id
+      .addCase(getIncomeByIdAsync.fulfilled, (state, action) => {
+        state.singleIncome.id = action.payload.id;
+        state.singleIncome.name = action.payload.name;
+        state.singleIncome.amount = action.payload.amount;
+        state.singleIncome.date = action.payload.date;
+        state.singleIncome.incomeSource.id = action.payload.incomeSource.id;
+        state.singleIncome.incomeSource.name = action.payload.incomeSource.name;
+        state.singleIncome.userId = action.payload.user.id;
+      })
+      .addCase(getIncomeByIdAsync.rejected, (_, action) => {
+        console.error("get income by id, error", action.error);
+        throw action.error;
+      })
+      // edit income
+      .addCase(editIncomeAsync.rejected, (_, action) => {
+        console.error("edit income, error", action.error);
         throw action.error;
       });
   },
