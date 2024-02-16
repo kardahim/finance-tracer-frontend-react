@@ -152,11 +152,14 @@ function Home() {
                   <div
                     className={styles["home__card__table__body__btn-action"]}
                   >
-                    {/* TODO: add edit */}
                     <button onClick={() => deleteIncome(income.id)}>
                       Delete
                     </button>
-                    <button>Edit</button>
+                    <button
+                      onClick={() => navigate(`/income/edit/${income.id}`)}
+                    >
+                      Edit
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -193,11 +196,14 @@ function Home() {
                   <div
                     className={styles["home__card__table__body__btn-action"]}
                   >
-                    {/* TODO: add edit */}
                     <button onClick={() => deleteExpense(expense.id)}>
                       Delete
                     </button>
-                    <button>Edit</button>
+                    <button
+                      onClick={() => navigate(`/expense/edit/${expense.id}`)}
+                    >
+                      Edit
+                    </button>
                   </div>
                 </td>
               </tr>
