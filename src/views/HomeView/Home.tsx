@@ -21,7 +21,6 @@ import {
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
-// FIXME: problem with missing <tr></tr> in table head (also in vue)
 function Home() {
   const dispatch: any = useDispatch();
   const navigate = useNavigate();
@@ -135,11 +134,13 @@ function Home() {
         <h1 className={styles.home__card__title}>Income</h1>
         <table className={styles.home__card__table}>
           <thead className={styles.home__card__table__head}>
-            <td>Name</td>
-            <td>Amount</td>
-            <td>Date</td>
-            <td>Income source</td>
-            <td>Action</td>
+            <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Income source</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody className={styles.home__card__table__body}>
             {income.map((income: any, key: any) => (
@@ -179,11 +180,13 @@ function Home() {
         <h1 className={styles.home__card__title}>Expenses</h1>
         <table className={styles.home__card__table}>
           <thead className={styles.home__card__table__head}>
-            <td>Name</td>
-            <td>Amount</td>
-            <td>Date</td>
-            <td>Expense source</td>
-            <td>Action</td>
+            <tr>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Expense source</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody className={styles.home__card__table__body}>
             {expenses.map((expense: any, key: any) => (
