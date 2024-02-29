@@ -62,8 +62,8 @@ function EditExpense() {
         sourceId: singleExpense.expenseSource.id,
       }}
     >
-      <Form className={styles.income}>
-        <h1 className={styles.expense__title}>Edit Income</h1>
+      <Form className={styles.expense}>
+        <h1 className={styles.expense__title}>Edit Expense</h1>
         <div className={styles.expense__item}>
           <label htmlFor="name" className={styles.expense__item__label}>
             Name
@@ -123,9 +123,9 @@ function EditExpense() {
             as="select"
             className={styles.expense__item__input}
           >
-            {expenseSources.map((income: any, key: any) => (
-              <option value={income.id} key={key}>
-                {income.name}
+            {expenseSources.map((expense: any, key: any) => (
+              <option value={expense.id} key={key}>
+                {expense.name}
               </option>
             ))}
           </Field>
